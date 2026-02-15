@@ -1,0 +1,334 @@
+.product-list-page {
+    padding-bottom: 80px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.product-list-header {
+    background: linear-gradient(135deg, #0F4C81 0%, #082d4f 100%);
+    padding: 32px 0;
+    border-bottom: none;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.product-list-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 8px 0 16px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.product-list-header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    max-width: 600px;
+}
+
+.product-list-header .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.product-list-header .breadcrumb-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.product-list-header .breadcrumb-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.product-list-header .breadcrumb-separator {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.product-list-header .breadcrumb-current {
+    font-weight: 600;
+    color: #fff;
+}
+
+.product-list-grid {
+    display: grid;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+@media (max-width: 1200px) {
+    .product-list-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .product-list-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-list-header h1 {
+        font-size: 2rem;
+    }
+
+    .product-list-header {
+        padding: 24px 0;
+    }
+
+    .product-layout-container {
+        gap: 0;
+    }
+}
+
+.product-layout-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.product-sidebar {
+    width: 260px;
+    position: sticky;
+    top: 100px;
+    background: transparent;
+    padding: 0;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    border: none;
+    box-shadow: none;
+}
+
+.product-sidebar h3 {
+    display: none;
+}
+
+
+.sidebar-group {
+    margin-bottom: 30px;
+}
+
+.sidebar-group-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0F4C81;
+    text-transform: uppercase;
+    margin: 0 0 12px 0;
+    letter-spacing: 0.5px;
+    padding: 0;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-group-title:hover {
+    color: #1a6cb1;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+}
+
+.sidebar-link {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 8px 0 8px 15px;
+    font-size: 1rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    font-weight: 400;
+    border-left: 2px solid transparent;
+}
+
+.sidebar-link:hover {
+    color: #0F4C81;
+    background: #f8fafc;
+    border-left-color: #cbd5e1;
+}
+
+.sidebar-link.active {
+    color: #0F4C81;
+    background: #eff6ff;
+    font-weight: 600;
+    border-left-color: #0F4C81;
+}
+
+.product-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.sub-category-section {
+    margin-bottom: 60px;
+    scroll-margin-top: 120px;
+}
+
+.sub-category-title {
+    font-size: 1.75rem;
+    color: #2c3e50;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #cbd5e1;
+}
+
+@media (max-width: 900px) {
+    .product-layout-container {
+        flex-direction: column;
+    }
+
+    .product-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 40px;
+        max-height: none;
+    }
+}
+
+
+
+
+.parent-category-group {
+    margin-bottom: 60px;
+}
+
+.product-search-bar {
+    position: relative;
+    margin: 0 auto 32px auto;
+    max-width: 450px;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px 12px 48px;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    color: #334155;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #0F4C81;
+    box-shadow: 0 8px 24px rgba(15, 76, 129, 0.12);
+    transform: translateY(-1px);
+}
+
+.search-icon-wrapper {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+    transition: color 0.3s;
+}
+
+.search-input:focus+.search-icon-wrapper {
+    color: #0F4C81;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.page-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #0F4C81;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #0F4C81;
+    color: #fff;
+    border-color: #0F4C81;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f1f5f9;
+}
+
+.page-info {
+    font-weight: 600;
+    color: #64748b;
+}
+
+.parent-category-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0F4C81;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+
+
+.accordion-trigger {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.accordion-trigger:hover {
+    color: #0F4C81;
+}
+
+.accordion-icon {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #0F4C81;
+}
+
+.accordion-trigger.active .accordion-icon {
+    color: #0F4C81;
+}
+
+.sidebar-sub-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+}
+
+.sidebar-sub-list.open {
+    max-height: 500px;
+    opacity: 1;
+    transition: max-height 0.5s ease-in, opacity 0.3s ease-in;
+}

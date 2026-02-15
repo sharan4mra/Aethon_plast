@@ -1,0 +1,6 @@
+node_modules/
+**/node_modules/
+server/ga-service-account.json
+.env
+**/.env
+.DS_Store

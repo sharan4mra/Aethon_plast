@@ -1,0 +1,347 @@
+.product-detail-page {
+    padding-bottom: 80px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding-top: 2rem;
+}
+
+.product-detail-page .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+.product-detail-page .breadcrumb-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.product-detail-page .breadcrumb-link:hover {
+    color: #0F4C81;
+    text-decoration: underline;
+}
+
+.product-detail-page .breadcrumb-separator {
+    color: #cbd5e1;
+}
+
+.product-detail-page .breadcrumb-current {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.product-detail-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .product-detail-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .product-info-section h1 {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .inquire-btn-toggle {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.product-toast {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0F4C81;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(15, 76, 129, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    animation: slideDownFade 0.3s ease-out;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.image-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.product-info-section h1 {
+    font-size: 2.5rem;
+    color: #002878;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.feature-list,
+.details-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+    color: #4a5568;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.feature-list li,
+.details-list li {
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.5;
+}
+
+.feature-list li::before,
+.details-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    top: -1px;
+    font-weight: bold;
+    color: #2d3748;
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+.inquire-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 2px solid #e53e3e;
+    color: #e53e3e;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-bottom: 3rem;
+    letter-spacing: 0.5px;
+}
+
+.inquire-btn:hover {
+    background-color: #e53e3e;
+    color: white;
+}
+
+.product-details-extra h3 {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.inquiry-form-container {
+    background: transparent;
+    padding: 0;
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+    margin-top: 1rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.inquire-btn-toggle {
+    display: inline-block;
+    padding: 10px 24px;
+    background-color: #dc2626;
+    border: none;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+}
+
+.inquire-btn-toggle:hover,
+.inquire-btn-toggle.active {
+    background-color: #b91c1c;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    color: #0F4C81;
+    margin: 0;
+}
+
+.btn-back-details {
+    color: #64748b;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.btn-back-details:hover {
+    color: #0F4C81;
+}
+
+.form-note {
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.red-quote {
+    color: #dc2626;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 4px;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #4b5563;
+    margin-bottom: 0.4rem;
+}
+
+.form-group label span.required {
+    color: #ef4444;
+    margin-left: 2px;
+}
+
+.form-control {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #6b7280;
+    font-family: inherit;
+    transition: all 0.2s;
+    width: 100%;
+    background-color: #fff;
+}
+
+.form-control::placeholder {
+    color: #9ca3af;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #d1d5db;
+    box-shadow: 0 0 0 3px rgba(229, 231, 235, 0.5);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 180px;
+}
+
+.btn-send-message {
+    background-color: #0ea5e9;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    width: auto;
+}
+
+.btn-send-message:hover {
+    background-color: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.5);
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

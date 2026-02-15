@@ -1,0 +1,151 @@
+.admin-dashboard-page {
+  min-height: 100vh;
+  background: #f8fafc;
+  padding: 24px;
+}
+
+.admin-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.admin-dashboard-header h1 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.admin-dashboard-header button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.admin-tab-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.admin-tab-buttons button {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.admin-tab-buttons button.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.admin-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.admin-section h2 {
+  margin: 0 0 14px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.admin-form input {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-form button {
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.admin-form button.secondary {
+  background: #475569;
+}
+
+.admin-form button.danger {
+  background: #b91c1c;
+}
+
+.admin-status {
+  margin: 0;
+  color: #0f766e;
+  font-size: 14px;
+}
+
+.admin-error {
+  color: #b91c1c;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table-wrap th,
+.admin-table-wrap td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table-wrap td img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.admin-table-wrap td button {
+  border: none;
+  border-radius: 6px;
+  padding: 7px 10px;
+  margin-right: 6px;
+  cursor: pointer;
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.admin-table-wrap td button.danger {
+  background: #b91c1c;
+}
+
+@media (max-width: 700px) {
+  .admin-dashboard-page {
+    padding: 14px;
+  }
+
+  .admin-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

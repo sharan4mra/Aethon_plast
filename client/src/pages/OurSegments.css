@@ -1,0 +1,232 @@
+.serve-page {
+    padding-bottom: 80px;
+}
+
+.serve-header {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.serve-header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.serve-header p {
+    font-size: 1.2rem;
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.segments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding-bottom: 80px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.segment-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f1f5f9;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.segment-row:nth-child(odd) {
+    transform: translateX(-100px);
+}
+
+.segment-row:nth-child(even) {
+    transform: translateX(100px);
+}
+
+.segment-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.segment-row:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.segment-row.reverse {
+    direction: rtl;
+}
+
+.segment-row.reverse .segment-content {
+    direction: ltr;
+}
+
+.segment-image {
+    height: 100%;
+    min-height: 350px;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.segment-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.segment-row:hover .segment-image img {
+    transform: scale(1.1);
+}
+
+.segment-content {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.segment-icon {
+    display: inline-flex;
+    padding: 12px;
+    background: #e0f2fe;
+    color: var(--primary-color);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    width: fit-content;
+}
+
+.segment-content h2 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.segment-content p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 25px;
+    flex-grow: 1;
+}
+
+.segment-features {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.segment-features li {
+    position: relative;
+    padding-left: 25px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.segment-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+@media (max-width: 900px) {
+    .segment-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+        border-radius: 16px;
+    }
+
+    .segment-row:nth-child(odd),
+    .segment-row:nth-child(even) {
+        transform: translateY(50px);
+    }
+
+    .segment-row.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .segment-image {
+        height: 250px;
+    }
+
+    .segment-content {
+        padding: 24px;
+    }
+
+    .segment-content h2 {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .serve-header {
+        padding: 60px 0;
+    }
+
+    .serve-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .segments-container {
+        gap: 40px;
+    }
+
+    .segment-content {
+        padding: 20px;
+    }
+
+    .segment-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .segment-features {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.btn-segment-view {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    gap: 12px;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    background: transparent;
+    margin-top: 30px;
+    width: fit-content;
+    align-self: center;
+}
+
+.btn-segment-view:hover {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+    gap: 15px;
+}

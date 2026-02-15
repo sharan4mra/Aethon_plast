@@ -1,0 +1,67 @@
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+}
+
+@media (min-width: 900px) {
+    .about-content {
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: var(--spacing-xl);
+    }
+}
+
+.about-main {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        gap: var(--spacing-lg);
+    }
+
+    .about-main {
+        padding: var(--spacing-md);
+    }
+}
+
+.vision-mission {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+.vm-card {
+    background: white;
+    color: var(--text-primary);
+    padding: 3rem 2rem;
+    border-radius: var(--border-radius-md);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border-top: 4px solid var(--primary-color);
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.vm-card h3 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.vm-card p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+
+.about-page .section {
+    padding-top: 3rem;
+}
