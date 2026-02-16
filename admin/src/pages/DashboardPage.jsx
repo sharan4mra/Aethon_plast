@@ -283,6 +283,7 @@ const DashboardPage = () => {
 
   const [userForm, setUserForm] = useState({ id: "", name: "", email: "" });
   const [productForm, setProductForm] = useState({ id: "", name: "", description: "", price: "", image: null });
+  const [adminForm, setAdminForm] = useState({ name: "", email: "", password: "" });
 
   const [marketSegments, setMarketSegments] = useState(fallbackSegments);
   const [marketForm, setMarketForm] = useState(emptyMarket);
@@ -1441,6 +1442,52 @@ const DashboardPage = () => {
               <h3>Admin Accounts</h3>
               <small>Total admins: {admins.length}</small>
             </div>
+            <form
+              className="panel-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                if (!adminForm.email || !adminForm.password) {
+                  setMessage("Admin email and password are required");
+                  return;
+                }
+                api.createAdmin(adminForm)
+                  .then((res) => {
+                    const created = res.admin || null;
+                    if (created) {
+                      setAdmins((prev) => [created, ...prev]);
+                    } else {
+                      api.getAdmins().then((payload) => {
+                        setAdmins(Array.isArray(payload.admins) ? payload.admins : []);
+                      });
+                    }
+                    setAdminForm({ name: "", email: "", password: "" });
+                    setMessage("Admin created");
+                  })
+                  .catch((error) => setMessage(error.message || "Failed to create admin"));
+              }}
+            >
+              <h4>Add New Admin</h4>
+              <input
+                placeholder="Name"
+                value={adminForm.name}
+                onChange={(e) => setAdminForm((s) => ({ ...s, name: e.target.value }))}
+              />
+              <input
+                placeholder="Email"
+                type="email"
+                value={adminForm.email}
+                onChange={(e) => setAdminForm((s) => ({ ...s, email: e.target.value }))}
+                required
+              />
+              <input
+                placeholder="Password"
+                type="password"
+                value={adminForm.password}
+                onChange={(e) => setAdminForm((s) => ({ ...s, password: e.target.value }))}
+                required
+              />
+              <button type="submit">Create Admin</button>
+            </form>
             <div className="table-wrap">
               <table>
                 <thead>

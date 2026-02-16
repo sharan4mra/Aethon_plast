@@ -147,11 +147,13 @@ export const api = {
     method: "POST",
     body: JSON.stringify({ email }),
   }),
-  resetPassword: (email, token, newPassword) => request("/auth/admin/reset-password", {
-    method: "POST",
-    body: JSON.stringify({ email, token, newPassword }),
-  }),
+  resetPassword: (email, token, newPassword, code) =>
+    request("/auth/admin/reset-password", {
+      method: "POST",
+      body: JSON.stringify({ email, token, newPassword, code }),
+    }),
   getAdmins: () => request("/auth/admins"),
+  createAdmin: (body) => request("/auth/admins", { method: "POST", body: JSON.stringify(body) }),
   deleteAdmin: (id) => request(`/auth/admins/${id}`, { method: "DELETE" }),
 
   getUsers: () =>

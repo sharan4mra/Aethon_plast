@@ -179,6 +179,9 @@ router.delete("/admins/:id", auth, async (req, res) => {
 
 router.post("/admin/signup", async (req, res) => {
   try {
+    if (String(process.env.DISABLE_PUBLIC_ADMIN_SIGNUP || "false").toLowerCase() === "true") {
+      return res.status(403).json({ message: "Admin signup is disabled." });
+    }
     await ensureSeedAdmins();
 
     const name = String(req.body?.name || "").trim();
@@ -226,6 +229,46 @@ router.post("/admin/signup", async (req, res) => {
       ...payload,
       verificationRequired: true,
       email,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to create admin account" });
+  }
+});
+
+// Admin-only: create a new admin account
+router.post("/admins", auth, async (req, res) => {
+  try {
+    await ensureSeedAdmins();
+
+    const name = String(req.body?.name || "").trim();
+    const email = String(req.body?.email || "").trim().toLowerCase();
+    const password = String(req.body?.password || "");
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const existing = await Admin.findOne({ email });
+    if (existing) {
+      return res.status(409).json({ message: "Admin account already exists for this email" });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const admin = await Admin.create({
+      name,
+      email,
+      passwordHash,
+      isVerified: true,
+      loginVerificationCodeHash: "",
+      loginVerificationExpiresAt: null,
+    });
+
+    return res.status(201).json({
+      message: "Admin created",
+      admin: { id: admin._id, name: admin.name, email: admin.email, createdAt: admin.createdAt },
     });
   } catch (error) {
     return res.status(500).json({ message: "Failed to create admin account" });
@@ -374,22 +417,20 @@ router.post("/admin/forgot-password", async (req, res) => {
       return res.json({ message: "If this email exists, a reset link has been sent." });
     }
 
-    const token = crypto.randomBytes(32).toString("hex");
-    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const resetCode = generateVerificationCode();
+    const tokenHash = crypto.createHash("sha256").update(resetCode).digest("hex");
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     admin.resetPasswordTokenHash = tokenHash;
     admin.resetPasswordExpiresAt = expiresAt;
     await admin.save();
 
-    const adminAppUrl = process.env.ADMIN_APP_URL || "http://localhost:5174/login";
-    const resetUrl = `${adminAppUrl}?resetToken=${token}&email=${encodeURIComponent(admin.email)}`;
     const transporter = createTransporter();
     if (!transporter) {
       if (process.env.NODE_ENV !== "production") {
         return res.json({
-          message: "SMTP is not configured. Use this reset link locally.",
-          resetLink: resetUrl,
+          message: "SMTP is not configured. Use this reset code locally.",
+          resetCode,
         });
       }
       return res
@@ -401,10 +442,10 @@ router.post("/admin/forgot-password", async (req, res) => {
       from: process.env.CONTACT_FROM_EMAIL || process.env.SMTP_USER || process.env.EMAIL_USER,
       to: admin.email,
       subject: "Admin password reset",
-      text: `Use this link to reset your password (valid for 15 minutes): ${resetUrl}`,
+      text: `Your password reset code is: ${resetCode}. It expires in 15 minutes.`,
     });
 
-    return res.json({ message: "If this email exists, a reset link has been sent." });
+    return res.json({ message: "If this email exists, a reset code has been sent." });
   } catch (error) {
     return res.status(500).json({ message: "Failed to process forgot password request" });
   }
@@ -413,18 +454,20 @@ router.post("/admin/forgot-password", async (req, res) => {
 router.post("/admin/reset-password", async (req, res) => {
   try {
     const email = String(req.body?.email || "").trim().toLowerCase();
-    const token = String(req.body?.token || "");
+    const token = String(req.body?.token || "").trim();
+    const code = String(req.body?.code || "").trim();
     const newPassword = String(req.body?.newPassword || "");
 
-    if (!email || !token || !newPassword) {
-      return res.status(400).json({ message: "Email, token, and new password are required" });
+    if (!email || !newPassword || (!token && !code)) {
+      return res.status(400).json({ message: "Email, reset code (or token), and new password are required" });
     }
 
     if (newPassword.length < 6) {
       return res.status(400).json({ message: "Password must be at least 6 characters" });
     }
 
-    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const resetValue = code || token;
+    const tokenHash = crypto.createHash("sha256").update(resetValue).digest("hex");
     const admin = await Admin.findOne({
       email,
       resetPasswordTokenHash: tokenHash,
@@ -432,7 +475,7 @@ router.post("/admin/reset-password", async (req, res) => {
     });
 
     if (!admin) {
-      return res.status(400).json({ message: "Invalid or expired reset token" });
+      return res.status(400).json({ message: "Invalid or expired reset code" });
     }
 
     admin.passwordHash = await bcrypt.hash(newPassword, 10);

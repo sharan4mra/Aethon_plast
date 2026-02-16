@@ -7,30 +7,32 @@ const LoginPage = () => {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("resetToken") || "";
   const resetEmailFromUrl = searchParams.get("email") || "";
-  const isResetMode = Boolean(resetToken);
 
   const [authMode, setAuthMode] = useState("login");
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [signupName, setSignupName] = useState("");
-  const [signupEmail, setSignupEmail] = useState("");
-  const [signupPassword, setSignupPassword] = useState("");
   const [verifyEmail, setVerifyEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
 
   const [forgotEmail, setForgotEmail] = useState(resetEmailFromUrl);
+  const [resetCode, setResetCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [showForgotForm, setShowForgotForm] = useState(false);
+  const [resetMode, setResetMode] = useState(false);
+
+  const isResetMode = Boolean(resetToken) || resetMode;
 
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const canSubmitReset = useMemo(
-    () => Boolean(resetEmailFromUrl || forgotEmail) && Boolean(newPassword),
-    [forgotEmail, newPassword, resetEmailFromUrl]
-  );
+  const canSubmitReset = useMemo(() => {
+    const emailOk = Boolean(resetEmailFromUrl || forgotEmail);
+    const passwordOk = Boolean(newPassword);
+    const codeOk = Boolean(isResetMode ? resetToken : resetCode);
+    return emailOk && passwordOk && codeOk;
+  }, [forgotEmail, newPassword, resetEmailFromUrl, resetCode, resetToken, isResetMode]);
 
   useEffect(() => {
     if (tokenStore.get()) {
@@ -63,25 +65,6 @@ const LoginPage = () => {
       } else {
         setError(requestError.message);
       }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSignup = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    clearMessages();
-
-    try {
-      const response = await api.signup(signupName, signupEmail, signupPassword);
-      setVerifyEmail(response.email || signupEmail);
-      setAuthMode("verify");
-      const codeHint = response.verificationCode ? ` Verification code: ${response.verificationCode}` : "";
-      setStatus((response.message || "Verification code sent.") + codeHint);
-      setSignupPassword("");
-    } catch (requestError) {
-      setError(requestError.message);
     } finally {
       setLoading(false);
     }
@@ -124,8 +107,9 @@ const LoginPage = () => {
 
     try {
       const response = await api.forgotPassword(forgotEmail);
-      const baseMessage = response.message || "If this email exists, a reset link has been sent.";
+      const baseMessage = response.message || "If this email exists, a reset code has been sent.";
       setStatus(response.resetLink ? `${baseMessage} ${response.resetLink}` : baseMessage);
+      setResetMode(true);
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -140,9 +124,15 @@ const LoginPage = () => {
 
     try {
       const emailForReset = resetEmailFromUrl || forgotEmail;
-      const response = await api.resetPassword(emailForReset, resetToken, newPassword);
+      const response = await api.resetPassword(
+        emailForReset,
+        resetToken,
+        newPassword,
+        isResetMode ? "" : resetCode
+      );
       setStatus(response.message || "Password reset successful. Please login.");
       setNewPassword("");
+      setResetCode("");
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -154,21 +144,11 @@ const LoginPage = () => {
     <div className="login-page">
       <form
         className="login-card"
-        onSubmit={
-          isResetMode
-            ? handleResetPassword
-            : authMode === "signup"
-            ? handleSignup
-            : authMode === "verify"
-            ? handleVerify
-            : handleLogin
-        }
+        onSubmit={isResetMode ? handleResetPassword : authMode === "verify" ? handleVerify : handleLogin}
       >
         <h1>
           {isResetMode
             ? "Reset Password"
-            : authMode === "signup"
-            ? "Admin Sign Up"
             : authMode === "verify"
             ? "Verify Code"
             : "Admin Login"}
@@ -176,16 +156,15 @@ const LoginPage = () => {
         <p>
           {isResetMode
             ? "Set a new password for your admin account."
-            : "Use email and password to access the admin panel."}
+            : authMode === "login"
+            ? "Use email and password to access the admin panel."
+            : "Enter the verification code sent to your email."}
         </p>
 
         {!isResetMode ? (
-          <div style={{ display: "grid", gap: 8, gridTemplateColumns: "1fr 1fr" }}>
+          <div style={{ display: "grid", gap: 8, gridTemplateColumns: "1fr" }}>
             <button type="button" onClick={() => { setAuthMode("login"); clearMessages(); }}>
               Login
-            </button>
-            <button type="button" onClick={() => { setAuthMode("signup"); clearMessages(); }}>
-              Sign Up
             </button>
           </div>
         ) : null}
@@ -200,34 +179,20 @@ const LoginPage = () => {
               required
               disabled={Boolean(resetEmailFromUrl)}
             />
+            {!resetToken ? (
+              <input
+                type="text"
+                placeholder="Reset code"
+                value={resetCode}
+                onChange={(event) => setResetCode(event.target.value)}
+                required
+              />
+            ) : null}
             <input
               type="password"
               placeholder="New password"
               value={newPassword}
               onChange={(event) => setNewPassword(event.target.value)}
-              required
-            />
-          </>
-        ) : authMode === "signup" ? (
-          <>
-            <input
-              type="text"
-              placeholder="Full name"
-              value={signupName}
-              onChange={(event) => setSignupName(event.target.value)}
-            />
-            <input
-              type="email"
-              placeholder="Admin email"
-              value={signupEmail}
-              onChange={(event) => setSignupEmail(event.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="New password"
-              value={signupPassword}
-              onChange={(event) => setSignupPassword(event.target.value)}
               required
             />
           </>
@@ -275,8 +240,6 @@ const LoginPage = () => {
             ? "Please wait..."
             : isResetMode
             ? "Reset Password"
-            : authMode === "signup"
-            ? "Create Account"
             : authMode === "verify"
             ? "Verify and Login"
             : "Sign In"}
@@ -309,7 +272,7 @@ const LoginPage = () => {
                   required
                 />
                 <button type="button" onClick={handleForgotPassword} disabled={loading || !forgotEmail}>
-                  Send Reset Link
+                  Send Reset Code
                 </button>
               </>
             ) : null}
