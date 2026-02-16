@@ -53,7 +53,14 @@ const OurSegments = () => {
     const { data } = useContentData('ourSegments', fallbackSegments);
     const { data: ourSegmentsPage } = useContentData('ourSegmentsPage', fallbackOurSegmentsPage);
     const pageContent = { ...fallbackOurSegmentsPage, ...(ourSegmentsPage || {}) };
-    const segments = Array.isArray(data) && data.length > 0 ? data : fallbackSegments;
+    const normalizeSegments = (incoming) => {
+        if (!Array.isArray(incoming) || incoming.length === 0) return fallbackSegments;
+        const incomingMap = new Map(incoming.map((item) => [String(item.id), item]));
+        const merged = fallbackSegments.map((item) => incomingMap.get(String(item.id)) || item);
+        const extra = incoming.filter((item) => !fallbackSegments.some((base) => String(base.id) === String(item.id)));
+        return [...merged, ...extra];
+    };
+    const segments = normalizeSegments(data);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
