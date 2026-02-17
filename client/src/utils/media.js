@@ -11,6 +11,10 @@ export const resolveMediaUrl = (value) => {
   if (!value) return "";
   if (value.startsWith("http://") || value.startsWith("https://")) return value;
   if (value.startsWith("/uploads/")) return `${API_ORIGIN}${value}`;
+  if (value.startsWith("/assets/")) {
+    const fileName = value.split("/").pop();
+    return `${API_ORIGIN}/uploads/${fileName}`;
+  }
   if (value.startsWith("/")) return value;
   return `${API_ORIGIN}/uploads/${value}`;
 };

@@ -2216,8 +2216,10 @@ const DashboardPage = () => {
                         if (!window.confirm("Delete this media file?")) return;
                         api.deleteMedia(file.name)
                           .then(() => {
-                            setMediaFiles((prev) => prev.filter((item) => item.name !== file.name));
-                            setMessage("Media deleted");
+                            return api.getMedia().then((files) => {
+                              setMediaFiles(Array.isArray(files) ? files : []);
+                              setMessage("Media deleted");
+                            });
                           })
                           .catch((error) => setMessage(error.message || "Failed to delete media"));
                       }}
