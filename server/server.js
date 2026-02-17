@@ -26,6 +26,14 @@ const createApp = () => {
     res.json({ status: "ok" });
   });
 
+  app.get("/", (req, res) => {
+    res.json({ status: "ok", service: "aethon-server", health: "/health" });
+  });
+
+  app.get("/api", (req, res) => {
+    res.json({ status: "ok", message: "API is running" });
+  });
+
   app.use("/api/auth", authRoutes);
   app.use("/api/products", productRoutes);
   app.use("/api/users", userRoutes);
