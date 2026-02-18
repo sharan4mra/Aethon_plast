@@ -11,10 +11,8 @@ export const resolveMediaUrl = (value) => {
   if (!value) return "";
   if (value.startsWith("http://") || value.startsWith("https://")) return value;
   if (value.startsWith("/uploads/")) return `${API_ORIGIN}${value}`;
-  if (value.startsWith("/assets/")) {
-    const fileName = value.split("/").pop();
-    return `${API_ORIGIN}/uploads/${fileName}`;
-  }
+  // Keep frontend bundled/static assets on the frontend origin.
+  if (value.startsWith("/assets/")) return value;
   if (value.startsWith("/")) return value;
   return `${API_ORIGIN}/uploads/${value}`;
 };
